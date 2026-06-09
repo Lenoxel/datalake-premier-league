@@ -1,0 +1,6 @@
+# Copie este arquivo para terraform.tfvars e preencha com seus valores.
+# O terraform.tfvars NÃO deve ser commitado no Git (já está no .gitignore).
+
+project_name = "datalake-premier-league"
+owner        = "seu-nome"
+aws_region   = "us-east-1"

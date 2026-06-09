@@ -1,0 +1,17 @@
+# Terraform state local (nunca commitar)
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
+# Variáveis com dados sensíveis
+*.tfvars
+!*.tfvars.example
+
+# Arquivos de plano
+*.tfplan
+
+# Credenciais e segredos
+*.pem
+*.key
+credentials
