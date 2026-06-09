@@ -1,4 +1,4 @@
-# Terraform — Datalake Pós-Graduação de Dados
+# Terraform — Datalake da Premier League
 
 ## Arquitetura
 
@@ -13,7 +13,7 @@ Nome dos buckets: `<projeto>-<env>-<layer>-<account_id>-<region>`
 ## Estrutura
 
 ```
-terraform-datalake/
+terraform-datalake-premier-league/
 ├── bootstrap.sh
 ├── modules/
 │   └── s3_bucket/
@@ -32,7 +32,7 @@ terraform-datalake/
 ## Primeiros passos
 
 ```bash
-# 1. Bootstrap (somente na primeira vez)
+# 1. Bootstrap
 chmod +x bootstrap.sh && ./bootstrap.sh
 
 # 2. Preencher providers.tf com os valores impressos pelo bootstrap
