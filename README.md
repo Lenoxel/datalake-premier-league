@@ -81,6 +81,28 @@ terraform plan
 terraform apply
 ```
 
+## Makefile commands
+
+This repository includes a `Makefile` that simplifies common tasks.
+
+- `make init` — initialize Terraform in `terraform/envs/dev`
+- `make plan` — run `terraform plan` in `terraform/envs/dev`
+- `make apply` — run `terraform apply` in `terraform/envs/dev`
+- `make destroy` — run `terraform destroy` in `terraform/envs/dev`
+- `make deploy` — deploy Glue scripts using `deploy.sh`
+- `make run-cleaned` — start the cleaned-zone Glue job
+- `make run-curated` — start the curated-zone Glue job
+- `make status-cleaned` — show the latest cleaned-zone Glue job run status
+- `make status-curated` — show the latest curated-zone Glue job run status
+- `make crawl-cleaned` — start the cleaned-zone Glue crawler
+- `make crawl-curated` — start the curated-zone Glue crawler
+- `make status-crawler-cleaned` — show the cleaned-zone crawler status
+- `make status-crawler-curated` — show the curated-zone crawler status
+- `make ls-cleaned` — list sample objects in the cleaned zone S3 prefix
+- `make ls-curated` — list sample objects in the curated zone S3 bucket
+- `make catalog-cleaned` — list Glue catalog tables in the `cleaned-zone` database
+- `make catalog-curated` — list Glue catalog tables in the `curated-zone` database
+
 ## Glue job source code
 
 The `src/` directory contains Python code for AWS Glue jobs.
