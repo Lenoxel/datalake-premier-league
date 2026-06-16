@@ -51,7 +51,11 @@ Bucket naming convention:
         │   ├── main.tf
         │   ├── outputs.tf
         │   └── variables.tf
-        └── s3_bucket/
+        ├── s3_bucket/
+        │   ├── main.tf
+        │   ├── outputs.tf
+        │   └── variables.tf
+        └── step_functions/
             ├── main.tf
             ├── outputs.tf
             └── variables.tf
@@ -65,6 +69,7 @@ The `terraform/` directory contains infrastructure configuration for the datalak
 - `terraform/envs/dev/`: environment-specific configuration.
 - `terraform/modules/s3_bucket/`: reusable S3 bucket module for each data lake layer.
 - `terraform/modules/compute/`: Glue job and crawler module.
+- `terraform/modules/step_functions/`: AWS Step Functions state machine for orchestrating the ETL pipeline.
 - `terraform/modules/athena/`: Athena-related resources placeholder.
 
 ### Deploying Terraform
@@ -102,6 +107,8 @@ This repository includes a `Makefile` that simplifies common tasks.
 - `make ls-curated` — list sample objects in the curated zone S3 bucket
 - `make catalog-cleaned` — list Glue catalog tables in the `cleaned-zone` database
 - `make catalog-curated` — list Glue catalog tables in the `curated-zone` database
+- `make run-pipeline` — start a Step Functions state machine execution
+- `make status-pipeline` — show the status of the latest Step Functions execution
 
 ## Glue job source code
 
