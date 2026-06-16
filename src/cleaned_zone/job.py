@@ -6,6 +6,8 @@ from awsglue.context import GlueContext
 from awsglue.job import Job
 from pyspark.context import SparkContext
 from pyspark.sql import functions as F
+from pyspark.sql import DataFrame
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -18,21 +20,37 @@ spark = glueCtx.spark_session
 job = Job(glueCtx)
 job.init(args["JOB_NAME"], args)
 
-# Config to handle dates in both dd/MM/yyyy and dd/MM/yy formats
-spark.conf.set("spark.sql.legacy.timeParserPolicy", "LEGACY")
-
 RAW_PATH = f"s3://{args['raw_bucket']}/matches/"
 OUTPUT_PATH = f"s3://{args['cleaned_bucket']}/matches/"
 
 logger.info("Reading CSV files from raw zone...")
 
-df_raw = (
-    spark.read.option("header", "true")
-    .option("inferSchema", "true")
-    .option("recursiveFileLookup", "true")
-    .option("mergeSchema", "true")
-    .csv(RAW_PATH)
-)
+
+def read_csv_safe(path: str) -> DataFrame:
+    return spark.read.option("header", "true").option("inferSchema", "true").csv(path)
+
+
+s3_client = boto3.client("s3")
+
+bucket = args["raw_bucket"]
+prefix = "matches/"
+
+paginator = s3_client.get_paginator("list_objects_v2")
+file_list = [
+    f"s3://{bucket}/{obj['Key']}"
+    for page in paginator.paginate(Bucket=bucket, Prefix=prefix)
+    for obj in page.get("Contents", [])
+    if obj["Key"].endswith(".csv")
+]
+
+logger.info(f"Found {len(file_list)} files in raw zone.")
+
+dfs = [read_csv_safe(path) for path in file_list]
+
+df_raw = dfs[0]
+
+for df_next in dfs[1:]:
+    df_raw = df_raw.unionByName(df_next, allowMissingColumns=True)
 
 logger.info(f"Original columns: {df_raw.columns}")
 logger.info(f"Total rows: {df_raw.count()}")
@@ -79,10 +97,10 @@ for old, new in column_map.items():
 
 df = df.withColumn(
     "match_date",
-    F.coalesce(
-        F.to_date(F.col("match_date_raw"), "dd/MM/yyyy"),
+    F.when(
+        F.length(F.col("match_date_raw")) <= 8,
         F.to_date(F.col("match_date_raw"), "dd/MM/yy"),
-    ),
+    ).otherwise(F.to_date(F.col("match_date_raw"), "dd/MM/yyyy")),
 )
 
 df = df.withColumn(
@@ -139,6 +157,8 @@ if missing_count > 0:
     logger.warning(
         f"Found {missing_count} rows with critical missing values. These rows will be dropped."
     )
+
+df = df.filter(F.col("away_team").rlike("^[A-Za-z]"))
 
 df = df.dropna(
     subset=["match_date", "home_team", "away_team", "home_goals", "away_goals"]
