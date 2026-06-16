@@ -27,6 +27,7 @@ variable "crawlers" {
   type = map(object({
     database_name = string
     bucket_id     = string
+    path          = string
   }))
 }
 

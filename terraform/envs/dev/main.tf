@@ -47,6 +47,7 @@ module "curated_zone" {
 
   prefixes = [
     "reports",
+    "athena-results",
   ]
 
   tags = local.common_tags
@@ -57,7 +58,7 @@ module "compute" {
   source = "../../modules/compute"
 
   prefix         = local.prefix
-  scripts_bucket = module.raw_zone.bucket_id  # scripts ficam na raw-zone sob o prefixo glue/
+  scripts_bucket = module.raw_zone.bucket_id
 
   bucket_arns = [
     module.raw_zone.bucket_arn,
@@ -88,10 +89,12 @@ module "compute" {
     cleaned_zone = {
       database_name = "cleaned-zone"
       bucket_id     = module.cleaned_zone.bucket_id
+      path         = "matches/"
     }
     curated_zone = {
       database_name = "curated-zone"
       bucket_id     = module.curated_zone.bucket_id
+      path        = "reports/"
     }
   }
 
