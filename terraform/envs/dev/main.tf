@@ -100,3 +100,17 @@ module "compute" {
 
   tags = local.common_tags
 }
+
+# ── Step Functions Pipeline ──────────────────────────────────────
+module "step_functions" {
+  source = "../../modules/step_functions"
+
+  prefix = local.prefix
+
+  cleaned_zone_job_name     = module.compute.job_names["cleaned_zone"]
+  curated_zone_job_name     = module.compute.job_names["curated_zone"]
+  cleaned_zone_crawler_name = module.compute.crawler_names["cleaned_zone"]
+  curated_zone_crawler_name = module.compute.crawler_names["curated_zone"]
+
+  tags = local.common_tags
+}

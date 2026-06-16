@@ -1,5 +1,5 @@
 variable "project_name" {
-  description = "Nome curto do projeto — usado na composição do nome dos buckets"
+  description = "Nome curto do projeto - usado na composição do nome dos buckets"
   type        = string
   default     = "datalake-premier-league"
 }

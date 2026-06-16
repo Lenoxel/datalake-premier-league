@@ -24,3 +24,8 @@ output "cleaned_zone_arn" {
 output "curated_zone_arn" {
   value = module.curated_zone.bucket_arn
 }
+
+output "state_machine_arn" {
+  description = "ARN da State Machine da pipeline ETL"
+  value       = module.step_functions.state_machine_arn
+}

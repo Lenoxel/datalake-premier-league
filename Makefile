@@ -85,3 +85,17 @@ catalog-cleaned:
 catalog-curated:
 	aws glue get-tables --database-name curated-zone \
 		--query 'TableList[*].Name'
+
+# ─────────────────────────────────────────────
+# Step Functions
+# ─────────────────────────────────────────────
+run-pipeline:
+	aws stepfunctions start-execution \
+		--state-machine-arn $$(cd $(TF_ENV) && terraform output -raw state_machine_arn) \
+		--name "exec-$$(date +%Y%m%d-%H%M%S)"
+
+status-pipeline:
+	aws stepfunctions list-executions \
+		--state-machine-arn $$(cd $(TF_ENV) && terraform output -raw state_machine_arn) \
+		--query 'executions[0].{Status:status, Start:startDate, Stop:stopDate}' \
+		--output table
