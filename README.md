@@ -46,7 +46,6 @@ Bucket naming convention:
     │       ├── terraform.tfvars
     │       └── terraform.tfvars.example
     └── modules/
-        ├── athena/
         ├── compute/
         │   ├── main.tf
         │   ├── outputs.tf
@@ -70,7 +69,6 @@ The `terraform/` directory contains infrastructure configuration for the datalak
 - `terraform/modules/s3_bucket/`: reusable S3 bucket module for each data lake layer.
 - `terraform/modules/compute/`: Glue job and crawler module.
 - `terraform/modules/step_functions/`: AWS Step Functions state machine for orchestrating the ETL pipeline.
-- `terraform/modules/athena/`: Athena-related resources placeholder.
 
 ### Deploying Terraform
 
@@ -115,7 +113,7 @@ This repository includes a `Makefile` that simplifies common tasks.
 The `src/` directory contains Python code for AWS Glue jobs.
 
 - `src/cleaned_zone/job.py`: ETL code that reads raw match CSVs, normalizes column names, parses dates, computes seasons, and writes cleaned Parquet output.
-- `src/curated_zone/job.py`: placeholder for curation logic.
+- `src/curated_zone/job.py`: ETL code that reads cleaned match Parquet, aggregates team performance metrics, and writes curated reports.
 
 ## Queries
 
