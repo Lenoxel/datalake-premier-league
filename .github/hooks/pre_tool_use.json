@@ -1,0 +1,9 @@
+[ancer base
+         "name": " pre_tool_use",
+  "event": "PreToolUse",
+  "action": "run_script",
+  "script": ".github/hooks/block_pretool_use.sh",
+  "behavior": "block",
+  "blocked_patterns": ["terraform destroy", "rm -rf"],
+  "inject_context": "Repository guidance: prefer Makefile targets such as make plan/apply/deploy and preserve the raw -> cleaned -> curated flow; avoid destructive infrastructure changes unless explicitly requested."
+}

@@ -7,7 +7,7 @@ This repository contains the Premier League datalake implementation, including T
 It currently includes:
 - `terraform/`: infrastructure as code for S3 data lake layers, Glue compute resources, and environment configuration
 - `src/`: Glue job source code for data cleaning and curation
-- `queries/`: query artifacts and related code
+- [AGENTS.md](AGENTS.md): repository-specific guidance for coding agents working on this project
 
 ## Architecture
 
@@ -22,13 +22,12 @@ Bucket naming convention:
 
 ## Repository structure
 
-```
+```text
 .
+├── AGENTS.md
 ├── Makefile
 ├── README.md
 ├── deploy.sh
-├── queries/
-│   └── job.py
 ├── src/
 │   ├── cleaned_zone/
 │   │   └── job.py
@@ -36,15 +35,14 @@ Bucket naming convention:
 │       └── job.py
 └── terraform/
     ├── .gitignore
-    ├── README.md
     ├── bootstrap.sh
     ├── envs/
     │   └── dev/
     │       ├── main.tf
     │       ├── outputs.tf
     │       ├── providers.tf
-    │       ├── terraform.tfvars
-    │       └── terraform.tfvars.example
+    │       ├── terraform.tfvars.example
+    │       └── terraform.tfvars
     └── modules/
         ├── compute/
         │   ├── main.tf
