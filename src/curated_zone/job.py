@@ -11,6 +11,15 @@ logger = logging.getLogger(__name__)
 
 args = getResolvedOptions(sys.argv, ["JOB_NAME", "cleaned_bucket", "curated_bucket"])
 
+# optional: choose output format via job argument `--output_format iceberg|parquet`
+output_format = "parquet"
+try:
+    extra = getResolvedOptions(sys.argv, ["output_format"])
+    output_format = extra.get("output_format", "parquet")
+except Exception:
+    # if not provided, default to parquet
+    pass
+
 sc = SparkContext()
 glueCtx = GlueContext(sc)
 spark = glueCtx.spark_session
