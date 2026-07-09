@@ -115,6 +115,9 @@ The `src/` directory contains Python code for AWS Glue jobs.
 - `src/cleaned_zone/job.py`: ETL code that reads raw match CSVs, normalizes column names, parses dates, computes seasons, and writes cleaned Parquet output.
 - `src/curated_zone/job.py`: ETL code that reads cleaned match Parquet, aggregates team performance metrics, and writes curated reports.
 
+### Optional Iceberg output
+`src/curated_zone/job.py` now supports an optional Glue job argument `--output_format iceberg` to write results to Iceberg instead of plain Parquet. This requires a Spark runtime with Iceberg support and a compatible Glue catalog or Iceberg catalog configuration.
+
 ## Queries
 
 The `queries/` directory currently contains query artifacts used by the project.
