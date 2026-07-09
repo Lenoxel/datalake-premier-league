@@ -37,6 +37,9 @@ run-cleaned:
 run-curated:
 	aws glue start-job-run --job-name $(JOB_CURATED)
 
+run-curated-iceberg:
+	aws glue start-job-run --job-name $(JOB_CURATED) --arguments='{"--output_format":"iceberg"}'
+
 status-cleaned:
 	aws glue get-job-runs --job-name $(JOB_CLEANED) \
 		--query 'JobRuns[0].{Status:JobRunState, Started:StartedOn, Duration:ExecutionTime}' \
